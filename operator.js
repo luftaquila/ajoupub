@@ -85,9 +85,7 @@ $(function() {
     }
 
     else if(value == '결제 완료') {
-
-    for(i = 0; i < list.length; i++) orderList += list[i].id + '/';
-    orderList = orderList.substr(0, orderList.length - 1);
+      for(i = 0; i < list.length; i++) orderList += list[i].id + '/';
 
       $('#proceed').attr('disabled', true);
       $('#status').css('color', '#ffbf00');
@@ -112,6 +110,7 @@ $(function() {
         $('#status').text('Error');
       });
       request.always(function() {
+        $('#proceed').attr('value', '결제 진행');
         $('#paymentProceed').css('display', 'none');
         $('input').attr('disabled', false);
         $('#DATA')[0].reset();
