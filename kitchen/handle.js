@@ -85,7 +85,7 @@ function load() {
 }
 function afterUpdate() {
   if(updateFlag) {
-    //if(new Date() - latestUpdate > 30000) load();
+    if(new Date() - latestUpdate > 30000) load();
     $('#status').text('Updated ' + Math.round((new Date() - latestUpdate) / 1000) + ' sec ago');
   }
 }
