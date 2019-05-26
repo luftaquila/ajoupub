@@ -18,7 +18,7 @@ $(function() {
     var request;
     if (request) request.abort();
 
-    var serializedData = '타입=삭제&데이터=' + confirm;
+    var serializedData = 'type=delete&데이터=' + confirm;
     console.log('Dataset : ' + serializedData);
     request = $.ajax({
         type: 'POST',

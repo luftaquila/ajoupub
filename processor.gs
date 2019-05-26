@@ -9,10 +9,10 @@ function handleResponse(e) {
     var sheet = doc.getSheetByName('Receiver');
 
     var headRow = e.parameter.header_row || 1;
-    var headers = doc.getSheetByName('Receiver').getRange(1, 1, 1, 3).getValues()[0];
+    var headers = doc.getSheetByName('Log').getRange(1, 1, 1, 4).getValues()[0];
     var row = [];
 
-    if(e.parameter['타입'] == '신청') {
+    if(e.parameter['type'] == 'assign') {
       for (i in headers) {
         if(i == 0) {
           row.push(new Date());
@@ -21,9 +21,10 @@ function handleResponse(e) {
         row.push(e.parameter[headers[i]]);
       }
       doc.getSheetByName('Log').getRange(doc.getSheetByName('Log').getLastRow() + 1, 1, 1, row.length).setValues([row]);
+      row.pop();
       sheet.getRange(sheet.getLastRow() + 1, 1, 1, row.length).setValues([row]);
     }
-    else if(e.parameter['타입'] == '삭제') {
+    else if(e.parameter['type'] == 'delete') {
       var received = e.parameter['데이터'].split('/');
       for(i in received) {
         var buffer = received[i].split('|');
@@ -31,7 +32,7 @@ function handleResponse(e) {
         for(var i = 0; i < data.length; i++) {
           if(buffer[1].substring(0, buffer[1].length - 1) == data[i][0]) {
             sheet.getRange('C' + (i + 2)).setValue(data[i][1].replace(buffer[0] + '/', ''));
-            return;
+            i = data.length;
           }
         }
       }

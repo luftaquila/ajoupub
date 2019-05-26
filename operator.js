@@ -94,7 +94,7 @@ $(function() {
       var request;
       if (request) request.abort();
 
-      var serializedData = '타입=신청&테이블 번호=' + tableNum + '&주문 메뉴=' + orderList;
+      var serializedData = 'type=assign&테이블 번호=' + tableNum + '&주문 메뉴=' + orderList + '&매출=₩' + $('#price').text();
       console.log('Dataset : ' + serializedData);
       request = $.ajax({
           type: 'POST',
