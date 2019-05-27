@@ -18,26 +18,36 @@
           <tr style="line-height: 50%"><td><br></td></tr>
           <tr> <td colspan="2">메인 메뉴</td> </tr>
           <tr>
-            <td><label for="모듬튀김"><input id="모듬튀김"type='checkbox' name='menu10' value="모듬튀김">모듬튀김</input></label></td>
-            <td><label for="떡볶음탕"><input id="떡볶음탕"type='checkbox' name='menu8' value="떡볶음탕">떡볶음탕</input></label></td>
+            <td><label for="모듬튀김"><input id="모듬튀김" type='checkbox' name='menu10' value="모듬튀김">모듬튀김</input></label></td>
+            <td><label for="떡볶음탕"><input id="떡볶음탕" type='checkbox' name='menu8' value="떡볶음탕">떡볶음탕</input></label></td>
           </tr>
           <tr>
-            <td><label for="두부김치"><input id="두부김치"type='checkbox' name='menu8' value="두부김치">두부김치</input></label></td>
-            <td><label for="김치찌개"><input id="김치찌개"type='checkbox' name='menu8' value="김치찌개">김치찌개</input></label></td>
+            <td><label for="두부김치"><input id="두부김치" type='checkbox' name='menu8' value="두부김치">두부김치</input></label></td>
+            <td><label for="김치찌개"><input id="김치찌개" type='checkbox' name='menu8' value="김치찌개">김치찌개</input></label></td>
           </tr>
           <tr>
-            <td><label for="옥수수전"><input id="옥수수전"type='checkbox' name='menu7' value="옥수수전">옥수수전</input></label></td>
-            <td><label for="꼬묵우동"><input id="꼬묵우동"type='checkbox' name='menu7' value="꼬묵우동">꼬묵우동</input></label></td>
+            <td><label for="옥수수전"><input id="옥수수전" type='checkbox' name='menu7' value="옥수수전">옥수수전</input></label></td>
+            <td><label for="꼬묵우동"><input id="꼬묵우동" type='checkbox' name='menu7' value="꼬묵우동">꼬묵우동</input></label></td>
           </tr>
           <tr style="line-height: 30%"><td><br></td></tr>
           <tr> <td colspan="2">사이드 메뉴</td> </tr>
           <tr>
-            <td><label for="나쵸치즈"><input id="나쵸치즈"type='checkbox' name='menuSide' value="나쵸치즈">나쵸치즈</input></label></td>
-            <td><label for="해장라면"><input id="해장라면"type='checkbox' name='menuSide' value="해장라면">해장라면</input></label></td>
+            <td><label for="나쵸치즈"><input id="나쵸치즈" type='checkbox' name='menuSide' value="나쵸치즈">나쵸치즈</input></label></td>
+            <td>해장라면 <input type="number" id='해장라면' style="width: 20; text-align: center"></td>
           </tr>
           <tr>
-            <td><label for="어묵튀김"><input id="어묵튀김"type='checkbox' name='menuSide' value="어묵튀김">어묵튀김</input></label></td>
-            <td><label for="주먹밥"><input id="주먹밥"type='checkbox' name='menuSide' value="주먹밥">주 먹 밥</input></label></td>
+            <td><label for="어묵튀김"><input id="어묵튀김" type='checkbox' name='menuSide' value="어묵튀김">어묵튀김</input></label></td>
+            <td>주 먹 밥&nbsp;&nbsp;<input type="number" id='주먹밥' style="width: 20; text-align: center"></td>
+          </tr>
+          <tr style="line-height: 30%"><td><br></td></tr>
+          <tr> <td colspan="2">기타 메뉴</td> </tr>
+          <tr>
+            <td>음료 0.1 <input type="number" id='음료01' style="width: 20; text-align: center"></td>
+            <td>사료리필 <input type="number" id='사료' style="width: 20; text-align: center"></td>
+          </tr>
+          <tr>
+            <td>음료 0.2 <input type="number" id='음료02' style="width: 20; text-align: center"></td>
+            <td>츄르리필 <input type="number" id='츄르' style="width: 20; text-align: center"></td>
           </tr>
           <tr style="line-height: 30%"><td><br></td></tr>
           <tr> <td colspan="2">세트 메뉴</td> </tr>
@@ -48,6 +58,26 @@
           <tr>
             <td><label for="고등어"><input id="고등어" type='radio' name='set' value="고등어">고등어</input></label></td>
             <td><label for="cancle"><input id='cancle' type='radio'>선택 해제</input></td>
+          </tr>
+          <tr style="line-height: 30%"><td><br></td></tr>
+          <tr id='menuSelect' style="display: none">
+            <td>0.8 선택</td>
+            <td>0.7 선택</td>
+          </tr>
+          <tr id='menuOption' style="display: none">
+            <td>
+              <select id='menulist08' name='menulist08' size='1'>
+                <option value='떡볶음탕'>떡볶음탕</option>
+                <option value='두부김치'>두부김치</option>
+                <option value='김치찌개'>김치찌개</option>
+              </select>
+            </td>
+            <td>
+              <select id='menulist07' name='menulist07' size='1'>
+                <option value='옥수수전'>옥수수전</option>
+                <option value='꼬묵우동'>꼬묵우동</option>
+              </select>
+            </td>
           </tr>
           <tr><td><br></td></tr>
         </thead>
@@ -76,5 +106,10 @@
   </body>
   <style>
     td { width: 50%; }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0; 
+    }
   </style>
 </html>

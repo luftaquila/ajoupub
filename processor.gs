@@ -32,7 +32,7 @@ function handleResponse(e) {
         for(var i = 0; i < data.length; i++) {
           if(buffer[1].substring(0, buffer[1].length - 1) == data[i][0]) {
             sheet.getRange('C' + (i + 2)).setValue(data[i][1].replace(buffer[0] + '/', ''));
-            i = data.length;
+            continue;
           }
         }
       }

@@ -5,6 +5,8 @@ $(function() {
 
   $('#confirm').click(function() {
     $('input').attr('disabled', true);
+    $('#status').css('color', '#ffbf00');
+    $('#status').text('Refreshing...');
     updateFlag = false;
 
     var checkList = $('input:checkbox:checked'), confirm = '';
@@ -44,10 +46,8 @@ $(function() {
 function load() {
   updateFlag = false;
   $('input').attr('disabled', true);
-  if(!$('#status').text().includes('Error')) {
-    $('#status').css('color', '#ffbf00');
-    $('#status').text('Refreshing...');
-  }
+  $('#status').css('color', '#ffbf00');
+  $('#status').text('Refreshing...');
 
   $.ajax({
   url: 'https://script.google.com/macros/s/AKfycbyRPHehwoToixRQqGws-ZBaDJLu0SbvrtGU9GArrBx_A7aA5w8/exec',
@@ -55,7 +55,7 @@ function load() {
   dataType: 'text',
   cache: false,
   success: function (response) {
-    var menuList = ['모듬튀김', '떡볶음탕', '두부김치', '김치찌개', '옥수수전', '꼬묵우동', '나쵸치즈', '해장라면', '어묵튀김', '주먹밥'];
+    var menuList = ['모듬튀김', '떡볶음탕', '두부김치', '김치찌개', '옥수수전', '꼬묵우동', '나쵸치즈', '해장라면', '어묵튀김', '주먹밥', '음료01', '음료02', '사료', '츄르'];
     var response = response.split('\n').map((line) => line.split(','));
     response.pop();
 
