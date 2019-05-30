@@ -77,7 +77,7 @@ $(function() {
           orderList += $('#menulist08').val() + '/' + $('#menulist07').val() + '/';
         }
         else if(setName == '차밍이') {
-          price += 27000;
+          price += 26000;
           orderList += '모듬튀김/' + $('#menulist08').val() + '/' + $('#menulist07').val() + '/';
         }
         else if(setName == '고등어') {
