@@ -1,0 +1,22 @@
+{
+  "main": [
+    { "name": "모듬튀김", "price": 10000, "description": "" },
+    { "name": "김치찌개", "price": 8000, "description": "" },
+    { "name": "마라파스탕", "price": 8000, "description": "" },
+    { "name": "소떡쏘야", "price": 7000, "description": "" },
+    { "name": "꼬묵우동", "price": 7000, "description": "" },
+    { "name": "마약옥수수전", "price": 7000, "description": "" }
+  ],
+  "sub": [
+    { "name": "콜라", "price": 2000, "description": "" },
+    { "name": "사이다", "price": 2000, "description": "" },
+    { "name": "쏘토닉세트", "price": 3000, "description": "토닉워터1 + 레몬슬라이스1/2 + 투명컵2" },
+    { "name": "주먹밥", "price": 3000, "description": "" },
+    { "name": "사료리필", "price": 1000, "description": "" }
+  ],
+  "set": [
+    { "name": "호순이 세트", "price": 18000, "originprice": 20000, "description": "", "contents": "8000*1+7000*1+3000*1+2000*1" },
+    { "name": "호준이 세트", "price": 30000, "originprice": 32000, "description": "", "contents": "8000*1+7000*1+10000*1+3000*1+2000*2" },
+    { "name": "호승이 세트", "price": 50000, "originprice": 59000, "description": "야옹이 선술집 사장 이호승", "contents": "main+3000*2+2000*3" }
+  ]
+}

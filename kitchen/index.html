@@ -1,33 +1,23 @@
 <html>
   <head>
-    <title>미유미유 주점 주문현황</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>야옹이선술집2020 주방</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html">
+    <link rel="stylesheet" href="/ajoupub/res/alertify/alertify.core.css" />
+    <link rel="stylesheet" href="/ajoupub/res/alertify/alertify.default.css" id="toggleCSS" />
+    <link rel="stylesheet" href="/ajoupub/res/micromodal/micromodal.min.css" />
+    <link rel="stylesheet" href="/ajoupub/res/btn.css" />
+    <link rel='stylesheet' href='/ajoupub/kitchen/kitchen.css' />
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap&subset=korean" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/291664cdf8.js" crossorigin="anonymous"></script>
   </head>
-  <body style="-ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none; text-align:center">
-    <table style='margin: 20 0 0 20; font-size: 1.5rem; border-spacing: 0 10'>
-      <tr><td>Status : <span id='status' style="color:#ffbf00">Loading...</span></td></tr>
-      <tr style="line-height: 50%"><td><br></td></tr>
-
-      <tr><td>모듬튀김 : <span id='queue_모듬튀김'></span></td></tr>
-      <tr><td style='width:100;'>떡볶음탕 : <span id='queue_떡볶음탕'></span></td></tr>
-      <tr><td style='width:100;'>두부김치 : <span id='queue_두부김치'></span></td></tr>
-      <tr><td style='width:100;'>김치찌개 : <span id='queue_김치찌개'></span></td></tr>
-      <tr><td style='width:100;'>옥수수전 : <span id='queue_옥수수전'></span></td></tr>
-      <tr><td style='width:100;'>꼬묵우동 : <span id='queue_꼬묵우동'></span></td></tr>
-      <tr style="line-height: 50%"><td><br></td></tr>
-
-      <tr><td style='width:100;'>나쵸치즈 : <span id='queue_나쵸치즈'></span></td></tr>
-      <tr><td style='width:100;'>해장라면 : <span id='queue_해장라면'></span></td></tr>
-      <tr><td style='width:100;'>어묵튀김 : <span id='queue_어묵튀김'></span></td></tr>
-      <tr><td  style='width:100;'>주 먹 밥&nbsp;&nbsp;: <span id='queue_주먹밥'></span></td></tr>
-      <tr style="line-height: 30%"><td><br></td></tr>
-      <tr><td><input type='button' id='confirm' value="확인" style="width: 80; height: 30"></input></td></tr>
-    </table>
-    <script src='/ajoumeow/Resources/Libraries/jquery-3.3.1.min.js'></script>
-    <script src='/ajoupub/kitchen/handle.js'></script>
+  <body>
+    
+    <script src='/ajoupub/res/jquery-3.3.1.min.js'></script>
+    <script src='/ajoupub/res/socket.io.js'></script>
+    <script src='/ajoupub/res/alertify/alertify.min.js'></script>
+    <script src='/ajoupub/res/micromodal/micromodal.min.js'></script>
+    <script src='/ajoupub/kitchen/kitchen.js'></script>
   </body>
-  <style>
-    td { width: 50%; }
-  </style>
 </html>

@@ -1,0 +1,26 @@
+{
+  "name": "ajoupub",
+  "version": "1.0.0",
+  "description": "Ajou Univ pub server",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mariadb": "^2.3.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luftaquila/ajoupub.git"
+  },
+  "author": "LUFT-AQUILA",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luftaquila/ajoupub/issues"
+  },
+  "homepage": "https://github.com/luftaquila/ajoupub#readme"
+}

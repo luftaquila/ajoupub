@@ -1,115 +1,119 @@
 <html>
   <head>
-    <title>미유미유 주점 주문서</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>야옹이선술집2020</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html">
+    <link rel="stylesheet" href="/ajoupub/res/alertify/alertify.core.css" />
+    <link rel="stylesheet" href="/ajoupub/res/alertify/alertify.default.css" id="toggleCSS" />
+    <link rel="stylesheet" href="/ajoupub/res/micromodal/micromodal.min.css" />
+    <link rel="stylesheet" href="/ajoupub/res/btn.css" />
+    <link rel='stylesheet' href='/ajoupub/hall.css' />
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap&subset=korean" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/291664cdf8.js" crossorigin="anonymous"></script>
   </head>
-  <body style="-ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none; text-align:center">
-    <form id="DATA">
-      <table style="width:70%; text-align:center; margin:auto">
-        <thead>
-          <tr style="line-height: 30%"><td><br></td></tr>
-          <tr>
-            <td style="text-align:right">Status :</td>
-            <td style="text-align:left"><span id='status' style="color:#ffbf00">Loading</span></td>
-          </tr>
-          <tr style="line-height: 50%"><td><br></td></tr>
-          <tr> <td colspan="2">테이블 번호 : <input id='tableNum' type='number' style="width: 50; text-align:center"></input></td> </tr>
-          <tr style="line-height: 50%"><td><br></td></tr>
-          <tr> <td colspan="2">메인 메뉴</td> </tr>
-          <tr>
-            <td><label for="모듬튀김"><input id="모듬튀김" type='checkbox' name='menu10' value="모듬튀김">모듬튀김</input></label></td>
-            <td><label for="떡볶음탕"><input id="떡볶음탕" type='checkbox' name='menu8' value="떡볶음탕">떡볶음탕</input></label></td>
-          </tr>
-          <tr>
-            <td><label for="두부김치"><input id="두부김치" type='checkbox' name='menu8' value="두부김치">두부김치</input></label></td>
-            <td><label for="김치찌개"><input id="김치찌개" type='checkbox' name='menu8' value="김치찌개">김치찌개</input></label></td>
-          </tr>
-          <tr>
-            <td><label for="옥수수전"><input id="옥수수전" type='checkbox' name='menu7' value="옥수수전">옥수수전</input></label></td>
-            <td><label for="꼬묵우동"><input id="꼬묵우동" type='checkbox' name='menu7' value="꼬묵우동">꼬묵우동</input></label></td>
-          </tr>
-          <tr style="line-height: 30%"><td><br></td></tr>
-          <tr> <td colspan="2">사이드 메뉴</td> </tr>
-          <tr>
-            <td><label for="나쵸치즈"><input id="나쵸치즈" type='checkbox' name='menuSide' value="나쵸치즈">나쵸치즈</input></label></td>
-            <td>해장라면 <input type="number" id='해장라면' style="width: 20; text-align: center"></td>
-          </tr>
-          <tr>
-            <td><label for="어묵튀김"><input id="어묵튀김" type='checkbox' name='menuSide' value="어묵튀김">어묵튀김</input></label></td>
-            <td>주 먹 밥&nbsp;&nbsp;<input type="number" id='주먹밥' style="width: 20; text-align: center"></td>
-          </tr>
-          <tr style="line-height: 30%"><td><br></td></tr>
-          <tr> <td colspan="2">기타 메뉴</td> </tr>
-          <tr>
-            <td>음료 0.1 <input type="number" id='음료01' style="width: 20; text-align: center"></td>
-            <td>사료리필 <input type="number" id='사료' style="width: 20; text-align: center"></td>
-          </tr>
-          <tr>
-            <td>음료 0.2 <input type="number" id='음료02' style="width: 20; text-align: center"></td>
-            <td>츄르리필 <input type="number" id='츄르' style="width: 20; text-align: center"></td>
-          </tr>
-          <tr style="line-height: 30%"><td><br></td></tr>
-          <tr> <td colspan="2">세트 메뉴</td> </tr>
-          <tr>
-            <td><label for="삼색이"><input id="삼색이" type='radio' name='set' value="삼색이">삼색이</input></label></td>
-            <td><label for="차밍이"><input id="차밍이" type='radio' name='set' value="차밍이">차밍이</input></label></td>
-          </tr>
-          <tr>
-            <td><label for="고등어"><input id="고등어" type='radio' name='set' value="고등어">고등어</input></label></td>
-            <td><label for="cancle"><input id='cancle' type='radio'>선택 해제</input></td>
-          </tr>
-          <tr style="line-height: 30%"><td><br></td></tr>
-          <tr id='menuSelect' style="display: none">
-            <td>0.8 선택</td>
-            <td>0.7 선택</td>
-          </tr>
-          <tr id='menuOption' style="display: none">
-            <td>
-              <select id='menulist08' name='menulist08' size='1'>
-                <option value='떡볶음탕'>떡볶음탕</option>
-                <option value='두부김치'>두부김치</option>
-                <option value='김치찌개'>김치찌개</option>
-              </select>
-            </td>
-            <td>
-              <select id='menulist07' name='menulist07' size='1'>
-                <option value='옥수수전'>옥수수전</option>
-                <option value='꼬묵우동'>꼬묵우동</option>
-              </select>
-            </td>
-          </tr>
-          <tr><td><br></td></tr>
-        </thead>
-        <tbody id='paymentProceed' style="display:none">
-          <tr><td colspan="2">결제 금액 : <span id='price'></span> 원</td></tr>
-          <tr style="line-height: 30%"><td><br></td></tr>
-          <tr>
-            <td><img src='/ajoupub/images/qrkakao.png' style="display: block; width:120; margin: auto"></img></td>
-            <td><img src='/ajoupub/images/qrtoss.jpg' style="display: block; width:120; margin: auto"></img></td>
-          </tr>
-          <tr style="height: 30">
-            <td><img src='/ajoupub/images/kakaopay.png' style="display: block; width:40%; margin: auto"></img></td>
-            <td><img src='/ajoupub/images/toss.png' style="display: block; width:50%; margin: auto"></img></td>
-          </tr>
-          <tr style="line-height: 30%"><td><br></td></tr>
-          <tr><td colspan="2">국민 28790200025880<br>토스 01052671887</td></tr>
-          <tr style="line-height: 50%"><td><br></td></tr>
-        </tbody>
-        <tfoot>
-          <tr><td colspan="2"><input type='button' id='proceed' value="결제 진행" style="width: 80; height: 30"></input></td></tr>
-        </tfoot>
-      </table><br><br>
-    </form>
-    <script src='/ajoumeow/Resources/Libraries/jquery-3.3.1.min.js'></script>
-    <script src='/ajoupub/operator.js'></script>
+  <body>
+    <div id="container" style='width: 96%; height: 100%; margin: auto;'>
+      <div id='banner' style='width: 100%; height: 7%; text-align: center;'>
+        <img src='/ajoupub/res/images/banner.png' style='height: 75%; margin-top: 10px; vertical-align: middle;'>
+      </div>
+      <div id='kiosk_ui' style='width: 100%; height: 60%'>
+        <ul class="tabs">
+          <li class="tab-link current" data-tab="tab_set">세트 메뉴</li>
+          <li class="tab-link" data-tab="tab_main">메인 메뉴</li>
+          <li class="tab-link" data-tab="tab_sub">사이드/음료</li>
+          <div style="float: right; text-align: right; font-size: 0.9rem; padding-top: 0.4rem; padding-right: 1rem">Table No.<br><span id='tablenum' style='font-size: 1rem; font-weight: bold;'>ㅡ</span></div>
+        </ul>
+        <div id='kiosk_items' style='width: 100%; height: 85%'>
+          <div id='tab_set' class="tab-content current"></div>
+          <div id='tab_main' class="tab-content"></div>
+          <div id='tab_sub' class="tab-content"></div>
+        </div>
+      </div>
+      <div id='payment_queue' style='width: 100%; height: 20%; margin: 0px; overflow-y: scroll'></div>
+      <div id='proceed_order' style='height: 13%; text-align: right;'>
+        <a id='price' class='btn yellow' style='font-size: 1rem; font-weight: bold'>₩0</a>
+        <a id='order' class='btn blue' style='font-size: 1rem; font-weight: bold'>주문할래요!</a><br>
+      </div>
+    </div>
+    <div id='modals'>
+      <div class="modal micromodal-slide" id="menudetail" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1">
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="memudetail-title" style='width: 90%; max-height: 80%!important; text-align: center; background-color: #302f2a; color: #eeeeee;'>
+            <header class="modal__header">
+              <h2 class="modal__title" id="menudetail-title"></h2>
+            </header>
+            <main class="modal__content" id="menudetail-content" style='margin-bottom: 1rem!important'></main>
+            <footer style='text-align: right'>
+              <a class='btn red modal__close' style='font-size: 0.9rem; padding: 5px 15px;' data-micromodal-close>취소</a>
+              <a id='addorder' class='btn blue' style='font-size: 0.9rem'>추가</a>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <div class="modal micromodal-slide" id="setdetail" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1">
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="setdetail-title" style='width: 90%; max-height: 90%!important; text-align: center; background-color: #302f2a; color: #eeeeee;'>
+            <header class="modal__header">
+              <h2 class="modal__title" id="setdetail-title"></h2>
+            </header>
+            <main class="modal__content" id="setdetail-content" style='margin: 1rem 0px!important'></main>
+            <footer style='text-align: right'>
+              <a class='btn red modal__close' style='font-size: 0.9rem; padding: 5px 15px;' data-micromodal-close>취소</a>
+              <a id='addset' class='btn blue' style='font-size: 0.9rem'>추가</a>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <div class="modal micromodal-slide" id="orderdetail" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1">
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="orderdetail-title" style='width: 90%; max-height: 90%!important; text-align: center; background-color: #302f2a; color: #eeeeee;'>
+            <header class="modal__header">
+              <h2 class="modal__title" id="orderdetail-title">주문내역 확인</h2>
+            </header>
+            <main class="modal__content" id="orderdetail-content" style='margin: 1rem 0px!important; text-align: left'></main>
+            <footer style='text-align: right'>
+              <a class='btn red modal__close' style='font-size: 0.9rem; padding: 5px 15px;' data-micromodal-close>취소</a>
+              <a id='pay' class='btn green' style='font-size: 1rem; font-weight: bold;'>띵 - 동!</a>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <div class="modal micromodal-slide" id="payment" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1">
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="payment-title" style='text-align: center; background-color: #302f2a; color: #eeeeee;'>
+            <header class="modal__header">
+              <h2 class="modal__title" id="payment-title">직원이 가고 있어요🏃💨</h2>
+            </header>
+            <main class="modal__content" id="payment-content" style='margin: 1rem 0px!important'>
+              잠시만 기다려 주세요!<br><br>
+              <span style='font-size: 0.8rem'><i class="fas fa-hand-point-down"></i> 클릭!</span><br><span style='line-height: 0.5rem'><br></span>
+              <input type='text' readonly class="account" value="국민 28790200025880"><br>예금주 : 이호승<br>
+              <h3 id="payprice"></h3>
+            </main>
+            <footer style='text-align: right'>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <div class="modal micromodal-slide" id="info" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1">
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="info-title" style='width: 65%; text-align: center; background-color: #302f2a; color: #eeeeee;'>
+            <header class="modal__header">
+              <h2 class="modal__title" id="info-title"></h2>
+            </header>
+            <main class="modal__content" id="info-content" style='margin: 1rem 0px!important; text-align: left'></main>
+            <footer style='text-align: right'>
+              <a class='btn red modal__close' style='font-size: 0.9rem; padding: 5px 15px;' data-micromodal-close>닫기</a>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src='/ajoupub/res/jquery-3.3.1.min.js'></script>
+    <script src='/ajoupub/res/socket.io.js'></script>
+    <script src='/ajoupub/res/alertify/alertify.min.js'></script>
+    <script src='/ajoupub/res/micromodal/micromodal.min.js'></script>
+    <script src='/ajoupub/hall.js'></script>
   </body>
-  <style>
-    td { width: 50%; }
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0; 
-    }
-  </style>
 </html>

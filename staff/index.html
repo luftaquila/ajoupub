@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <title>야옹이선술집2020 직원</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html">
+    <link rel="stylesheet" href="/ajoupub/res/alertify/alertify.core.css" />
+    <link rel="stylesheet" href="/ajoupub/res/alertify/alertify.default.css" id="toggleCSS" />
+    <link rel="stylesheet" href="/ajoupub/res/micromodal/micromodal.min.css" />
+    <link rel="stylesheet" href="/ajoupub/res/btn.css" />
+    <link rel='stylesheet' href='/ajoupub/staff/staff.css' />
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap&subset=korean" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/291664cdf8.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div style="width: 100%; text-align: center; margin-top: 20px;">
+      <div style='display: inline-block; width: 20px; height: 20px; border: 5px solid lightblue'></div><span style='line-height: 20px; font-size: 20px; color: lightblue'> : 정상</span>&nbsp;&nbsp;&nbsp;
+      <div style='display: inline-block; width: 20px; height: 20px; border: 5px solid green'></div><span style='line-height: 20px; font-size: 20px; color: green'> : 음식대기</span>&nbsp;&nbsp;&nbsp;          
+      <div style='display: inline-block; width: 20px; height: 20px; border: 5px solid red'></div><span style='line-height: 20px; font-size: 20px; color: red'> : 결제대기</span>&nbsp;&nbsp;&nbsp;
+    </div>
+    <div id='tablearea'></div><br><br><br>
+    <div id='modals'>
+      <div class="modal micromodal-slide" id="awaitpayment" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1">
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="awaitpayment-title" style='text-align: center;'>
+            <header class="modal__header">
+              <h2 class="modal__title" id="awaitpayment-title">결제 인증</h2>
+            </header>
+            <main class="modal__content" id="awaitpayment-content" style='margin: 0.8rem 0;'>
+              <h1 class='price'></h1>
+              <img style='width: 75px; height: 30px;' src='/ajoupub/res/images/kakaopay.png'><br>
+              <img style='width: 200px; height: 200px' src='/ajoupub/res/images/kakaopay_qr.png'>
+              <h2>국민 28790200025880</h2>
+            </main>
+            <footer style='text-align: right'>
+              <a class='btn yellow modal__close' style='font-size: 0.9rem;' data-micromodal-close>닫기</a>
+              <a id='removeorder' class='btn red' style='font-size: 0.9rem'>주문 삭제</a>
+              <a id='verifyorder' class='btn green' style='font-size: 0.9rem'>결제 확인</a>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <div class="modal micromodal-slide" id="awaitfood" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1">
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="awaitfood-title" style='text-align: center;'>
+            <header class="modal__header">
+              <h2 class="modal__title" id="awaitfood-title">주문 현황</h2>
+            </header>
+            <main class="modal__content" id="awaitfood-content" style='margin: 0.8rem 0;'>
+            </main>
+            <footer style='text-align: right'>
+              <a class='btn yellow modal__close' style='font-size: 0.9rem;' data-micromodal-close>닫기</a>
+              <a class='btn green' style='font-size: 0.9rem;'>서빙 완료</a>
+            </footer> 
+          </div>
+        </div>
+      </div>
+      <div class="modal micromodal-slide" id="confirm_remove_prompt" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1">
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="confirm_remove-title">
+            <header class="modal__header">
+              <h2 class="modal__title" id="confirm_remove-title"></h2>
+            </header>
+            <main class="modal__content" id="confirm_remove-content" style='margin-bottom: 1rem!important'>
+              주문을 정말로 삭제하시겠습니까?
+            </main>
+            <footer style='text-align: right'>
+              <a class='btn yellow modal__close' style='font-size: 0.9rem; padding: 5px 15px;' data-micromodal-close>취소</a>
+              <a id='confirm_remove' class='btn red' style='font-size: 0.9rem'>주문 삭제</a>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <div class="modal micromodal-slide" id="confirm_payment_prompt" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1">
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="confirm_payment-title">
+            <header class="modal__header">
+              <h2 class="modal__title" id="confirm_payment-title">결제 인증</h2>
+            </header>
+            <main class="modal__content" id="confirm_payment-content" style='text-align: center; margin-bottom: 1rem!important'>
+              <input id="staffcode" type="number" style="font-size: 1rem; margin:0; width: 6rem; text-align: center;">
+            </main>
+            <footer style='text-align: right'>
+              <a class='btn yellow modal__close' style='font-size: 0.9rem; padding: 5px 15px;' data-micromodal-close>취소</a>
+              <a id='confirm_payment' class='btn green' style='font-size: 0.9rem'>인증</a>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src='/ajoupub/res/jquery-3.3.1.min.js'></script>
+    <script src='/ajoupub/res/socket.io.js'></script>
+    <script src='/ajoupub/res/alertify/alertify.min.js'></script>
+    <script src='/ajoupub/res/micromodal/micromodal.min.js'></script>
+    <script src='/ajoupub/staff/staff.js'></script>
+  </body>
+</html>
