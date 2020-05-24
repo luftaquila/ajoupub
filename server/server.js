@@ -34,7 +34,11 @@ app.post('/requestTableStatus', async function(req, res) {
 
 io.sockets.on('connection', async function (socket) {
   if(socket.handshake.query.identity == 'client') socket.join('client');
-  else if(socket.handshake.query.identity == 'staff') socket.join('staff');
+  else if(socket.handshake.query.identity == 'staff') {
+    socket.join('staff');
+    let queuestatus = await db.query('SELECT * FROM `queue`;');
+    socket.emit('queuechanged', queuestatus);
+  }
   else if(socket.handshake.query.identity == 'kitchen') socket.join('kitchen');
   
   socket.on('paymentcall', async function (data) {
@@ -82,8 +86,10 @@ io.sockets.on('connection', async function (socket) {
       target.push(obj);
     }
     await db.query("UPDATE `table_status` SET `status`='awaitfood', `price`=0, `menu`='" + JSON.stringify(target) + "' WHERE `table`='" + order.table + "';"); // 테이블 상태 업데이트
-    io.to('kitchen').emit('orderadded', { });
     io.to('staff').emit('tablechanged', { table: data.table, status: 'awaitfood', price: 0, menu: JSON.stringify(target) });
+    
+    let queuestatus = await db.query('SELECT * FROM `queue`;');
+    io.to('kitchen').to('staff').emit('queuechanged', queuestatus);
   });
   socket.on('servedfoods', async function(data) {
     let table = data.table;
@@ -118,8 +124,9 @@ io.sockets.on('connection', async function (socket) {
       await db.query("UPDATE `table_status` SET `status`='normal' WHERE `table`='" + table + "';");
       io.to('staff').emit('tablechanged', { table: table, status: 'normal', price: 0, menu: '.' });    
     }
-    io.to('kitchen').emit('orderadded', { });
     io.to('staff').emit('reloadservedlist');
+    let queuestatus = await db.query('SELECT * FROM `queue`;');
+    io.to('kitchen').to('staff').emit('queuechanged', queuestatus);
   });
 });
 

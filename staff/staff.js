@@ -1,6 +1,6 @@
 let staff;
 $(function() {
-  //(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
+  (function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
   init();
   eventhandler()
   sockethandler();
@@ -110,6 +110,15 @@ function sockethandler() {
          '</label>';
     }
     $('#awaitfood-content').html(html);
+  });
+  socket.on('queuechanged', function(queue) {
+    let html = '';
+    for(let obj of queue) {
+      html += '<span>' + obj.table + '번 테이블(' + obj.id + ')</span><ul style="margin-top: 5px">';
+      for(let order of JSON.parse(obj.menu).order) html += '<li>' + order.name + ' ' + order.quantity + '개</li>';
+      html += '</ul>'
+    }
+    $('#queue-content').html(html);
   });
 }
 
