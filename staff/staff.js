@@ -1,7 +1,8 @@
 let staff;
 $(function() {
-  (function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
+  //(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
   init();
+  eventhandler()
   sockethandler();
 });
 function init() {
@@ -27,7 +28,6 @@ function drawTable(count, row) {
   }
   html += '</table>';
   $('#tablearea').html(html);
-  eventhandler();
   $.ajax({
     url: '/ajoupub/api/requestTableStatus',
     type: 'POST',
@@ -45,10 +45,23 @@ function eventhandler() {
   });
   $(document).on('click','.awaitfood', function() {
     $('#awaitfood-title').html('<span class="tablenum">' + $(this).attr('id').replace('table_', '') + '</span>번 테이블 주문 현황');
-    let html = '' +
-        
+    let order = JSON.parse($(this).attr('data-menu')), html = '';
+    for(let obj of order) {
+      html += '' +
+        '<label class="control control--checkbox" style="width: 60%; text-align: right">' + obj.name  + ' ' + obj.quantity + '개' +
+          '<input type="checkbox" name="served" value=' + "'" + JSON.stringify(obj) + "' />" +
+          '<div class="control__indicator"></div>' +
+         '</label>';
+    }
     $('#awaitfood-content').html(html);
     MicroModal.show('awaitfood');
+  });
+  $('#serveok').click(function() {
+    let target = $('input[name=served]:checked');
+    if(!target.length) { alertify.error('선택된 주문이 없습니다!'); return; }
+    let served = { table: $('#awaitfood-title span.tablenum').text(), served: [] };
+    for(let obj of target) served.served.push(JSON.parse($(obj).val()));
+    socket.emit('servedfoods', served);
   });
   $('#removeorder').click(function() { MicroModal.show('confirm_remove_prompt'); });
   $('#confirm_remove').click(function() {
@@ -71,12 +84,32 @@ function eventhandler() {
 
 function sockethandler() {
   socket = io.connect('https://luftaquila.io', { path: "/ajoupub/socket", query: "identity=staff" });
+  socket.on('connect', init);
+  socket.on('connect_error', function() { alertify.error('ERR_SOCKET_NOT_ESTABLISHED<br>소켓 서버가 응답하지 않습니다.'); });
   socket.on('paymentrequest', function(data) {
     alertify.log(data.table + '번 테이블이 결제를 요청합니다.', "", 0);
   });
   socket.on('tablechanged', function(data) {
     let target = $('#table_' + data.table);
     target.attr('data-price', (data.price == '-') ? target.attr('data-price') : data.price).attr('data-menu', (data.menu == '-') ? target.attr('data-menu') : data.menu).removeClass().addClass(data.status);
+  });
+  socket.on('reloadservedlist', function() {
+    let order, html = '';
+    try {
+      order = JSON.parse($('#table_' + $('#awaitfood-title span.tablenum').text()).attr('data-menu'));
+    }
+    catch(e) {
+      MicroModal.close('awaitfood');
+      return;
+    }
+    for(let obj of order) {
+      html += '' +
+        '<label class="control control--checkbox" style="width: 60%; text-align: right">' + obj.name  + ' ' + obj.quantity + '개' +
+          '<input type="checkbox" name="served" value=' + "'" + JSON.stringify(obj) + "' />" +
+          '<div class="control__indicator"></div>' +
+         '</label>';
+    }
+    $('#awaitfood-content').html(html);
   });
 }
 

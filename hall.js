@@ -254,6 +254,7 @@ function eventhandler() {
 
 function sockethandler() {
   socket = io.connect('https://luftaquila.io', { path: "/ajoupub/socket", query: "identity=client" });
+  socket.on('connect_error', function() { alertify.error('ERR_SOCKET_NOT_ESTABLISHED<br>소켓 서버가 응답하지 않습니다.'); });
   socket.on('closingorder', function(data) {
     if(data.table == table) {
       MicroModal.close('payment');
@@ -269,6 +270,8 @@ function sockethandler() {
       $('#info-content').text('주문 완료~!');
       MicroModal.show('info');
       socket.emit('orderdetail', { table: table, order: cart, price: $('#payprice').text().replace('￦', '').replace(',', '').trim(), staff: data.staff });  
+      cart = [];
+      queueWriter();
     }
   });
 }
