@@ -11,13 +11,12 @@ const DBOptions = {
 };
 const app = express();
 const pool = mariadb.createPool(DBOptions);
-let db;
-(async function() { db = await pool.getConnection(); })();
-/*
-fs.readFile('/home/luftaquila/HDD/ajoupub/staff.json', 'utf8', function(err, data) {
-  let set = JSON.parse(data);
-});
-*/
+let db, menu = [];
+(async function() {
+  db = await pool.getConnection();
+  readMenu();
+})();
+
 app.listen(3150, async function() {
   db = await pool.getConnection();
   console.log('Express is listening on port 3150\nSocket.io is listening on port 3140');
@@ -33,13 +32,21 @@ app.post('/requestTableStatus', async function(req, res) {
 });
 
 io.sockets.on('connection', async function (socket) {
-  if(socket.handshake.query.identity == 'client') socket.join('client');
+  if(socket.handshake.query.identity == 'client') {
+    socket.join('client');
+    socket.emit('queueinfo', menu);
+  }
   else if(socket.handshake.query.identity == 'staff') {
     socket.join('staff');
     let queuestatus = await db.query('SELECT * FROM `queue`;');
     socket.emit('queuechanged', queuestatus);
   }
-  else if(socket.handshake.query.identity == 'kitchen') socket.join('kitchen');
+  else if(socket.handshake.query.identity == 'kitchen') {
+    socket.join('kitchen');
+    let queuestatus = await db.query('SELECT * FROM `queue`;');
+    socket.emit('queuechanged', queuestatus);
+    socket.emit('queueinfo', menu);
+  }
   
   socket.on('paymentcall', async function (data) {
     await db.query("UPDATE `table_status` SET `status`='awaitpayment', `price`=" + data.price + " WHERE `table`='" + data.table + "';");
@@ -84,13 +91,21 @@ io.sockets.on('connection', async function (socket) {
     for(let obj of order.order) {
       obj.orderID = result.insertId;
       target.push(obj);
+      
+      let queueTarget = menu.find(o => o.name == obj.name);
+      if(queueTarget) {
+        if(!queueTarget.queue) queueTarget.start = Date.now();
+        queueTarget.queue += obj.quantity;
+      }
     }
     await db.query("UPDATE `table_status` SET `status`='awaitfood', `price`=0, `menu`='" + JSON.stringify(target) + "' WHERE `table`='" + order.table + "';"); // 테이블 상태 업데이트
     io.to('staff').emit('tablechanged', { table: data.table, status: 'awaitfood', price: 0, menu: JSON.stringify(target) });
     
     let queuestatus = await db.query('SELECT * FROM `queue`;');
-    io.to('kitchen').to('staff').emit('queuechanged', queuestatus);
+    io.to('staff').to('kitchen').emit('queuechanged', queuestatus);
+    io.to('client').to('kitchen').emit('queueinfo', menu);
   });
+  
   socket.on('servedfoods', async function(data) {
     let table = data.table;
     for(let obj of data.served) {
@@ -115,6 +130,9 @@ io.sockets.on('connection', async function (socket) {
           break;
         }
       }
+      //큐에서 삭제
+      let queueTarget = menu.find(o => o.name == obj.name);
+      if(queueTarget) queueTarget.queue -= obj.quantity;
     }
     
     let tablestatus = await db.query("SELECT `menu` FROM `table_status` WHERE `table`='" + table + "';");
@@ -126,8 +144,65 @@ io.sockets.on('connection', async function (socket) {
     }
     io.to('staff').emit('reloadservedlist');
     let queuestatus = await db.query('SELECT * FROM `queue`;');
-    io.to('kitchen').to('staff').emit('queuechanged', queuestatus);
+    io.to('staff').to('kitchen').emit('queuechanged', queuestatus);
+    io.to('client').to('kitchen').emit('queueinfo', menu);
+  });
+  
+  socket.on('queueupdated', function(data) {
+    let target = menu.find(o => o.name == data.name);
+    if(target) {
+      if(data.key == 'eta') {
+        let eta = Math.round((target.start + (target.queue * target.cooktime * 60000 / target.slot) - Date.now() + (target.offset * 60000)) / 60000);
+        eta = (eta > 0) ? eta : 0;
+        if(!eta) target.start = Date.now();
+        if(eta || data.value > 0) target.offset += data.value;
+      }
+      else target[data.key] = data.value;
+    }
+    io.to('client').to('kitchen').emit('queueinfo', menu);
+  });
+  
+  socket.on('resetall', async function() {
+    await db.query("TRUNCATE TABLE `log`;");
+    await db.query("TRUNCATE TABLE `queue`;");
+    await db.query("UPDATE `table_status` SET `status`='normal', `price`=0, `menu`='';");
+    readMenu();
+    
+    let queuestatus = await db.query('SELECT * FROM `queue`;');
+    io.to('staff').to('kitchen').emit('queuechanged', queuestatus);
+    io.to('staff').emit('tablereset');
+    io.to('client').to('kitchen').emit('queueinfo', menu);
   });
 });
 
+function readMenu() {
+  fs.readFile('/home/luftaquila/HDD/ajoupub/menu.json', 'utf8', async function(err, data) {
+    let list = JSON.parse(data);
+    delete list.set;
+    init_menu(list.main);
+    init_menu(list.sub);
+    menu = list.main.concat(list.sub);
+    
+    let queue = await db.query('SELECT * FROM `queue`;');
+    for(let obj of queue) {
+      let item = JSON.parse(obj.menu);
+      for(let order of item.order) {
+        let target = menu.find(o => o.name == order.name);
+        if(target) target.queue += order.quantity;
+      }
+    }
+  
+    function init_menu(menu) {
+      for(let i in menu) {
+        delete menu[i].price;
+        delete menu[i].description;
+        menu[i].queue = 0;
+        menu[i].start = Date.now();
+        menu[i].offset = 0;
+        menu[i].isReady = true;
+        menu[i].isBefore = false;
+      }
+    }
+  });
+}
 

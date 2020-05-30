@@ -53,6 +53,7 @@ ul.tabs li.current {
   
 }
 .menucontent {
+  position: relative;
   border-radius: 5px;
   display: inline-block;
   width: 30%;
@@ -82,6 +83,8 @@ ul.tabs li.current {
   font-size: 1.2rem;
   width: 12rem;
 }
+
+.soldout { }
 
 /* Ripple effect */
 .ripple {

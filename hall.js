@@ -16,11 +16,11 @@ function init() {
   table = table.substr(table.indexOf('=') + 1);
   $('#tablenum').text(table);
   $.ajax({
-    url: "/ajoupub/menutemp.json",
+    url: "/ajoupub/menu.json",
     type: 'GET',
     cache: false,
     success: function(menu) {
-      menus = menu
+      menus = menu;
       let setmenu = '', mainmenu = '', submenu = '';
       for(let set of menu.set) {
         let list8000 = '', list7000 = '';
@@ -51,16 +51,19 @@ function init() {
               "<span class='price' style='display: none'>" + main.price + "</span>" +
               "<span class='description' style='display: none'>" + main.description + "</span>" +
               "소요시간 <span class='timespent'>-</span>분" +
+              "<div class='soldout mainsoldout' style='display: none; position: absolute; top: 0; left: 0; background-color: rgba(255, 255, 255, 0.5); border-radius: 5px;'><img style='width: 100%; height: 100%;' src='/ajoupub/res/images/soldout.png'></div>" +
           "</div>";
       }
       for(let sub of menu.sub) {
         submenu += "" +
           "<div class='menucontent submenu ripple' id='" + sub.name + "'>" +
               "<img style='width: 75px; height: 75px; margin: 10px auto 5px' src='/ajoupub/res/images/menu/preview/" + sub.name + "_preview.jpg' /><br>" +
-              "<span class='menuname'>" + sub.name + "</span><br><br>" +
-              "<span class='priceforview'>￦" + comma(sub.price) + "</span>" +
+              "<span class='menuname'>" + sub.name + "</span><br>" +
+              "<span class='priceforview'>￦" + comma(sub.price) + "</span><br><br>" +
               "<span class='price' style='display: none'>" + sub.price + "</span>" +
               "<span class='description' style='display: none'>" + sub.description + "</span>" +
+              "소요시간 <span class='timespent'>-</span>분" +
+              "<div class='soldout subsoldout' style='display: none; position: absolute; top: 0; left: 0; background-color: rgba(255, 255, 255, 0.5); border-radius: 5px;'><img style='width: 100%; height: 100%;' src='/ajoupub/res/images/soldout.png'></div>" +
           "</div>";
       }
       $('#tab_set').html(setmenu);
@@ -68,6 +71,7 @@ function init() {
       $('#tab_sub').html(submenu);
       
       $('.menucontent').click(function() {
+        if($(this).children('div.soldout').css('display') == 'block') return;
         let obj = $(this);
         $('#menudetail-title').text(obj.attr('id'));
         let modalhtml = "" +
@@ -122,7 +126,6 @@ function init() {
         $('#setdetail-content span.content').children('span.list8000').after($(html8000)).remove('span.list8000');
         $('#setdetail-content span.content').children('span.list7000').after($(html7000 + '<br><span style="line-height: 0.3rem"><br></span>')).remove('span.list7000');
         $('#setdetail-content span.content').children('span.drink').after($('<br><span style="line-height: 0.1rem"><br></span>+ ' + htmldrink.repeat(drinkcount))).remove('span.drink');
-
         
         /*Dropdown Menu*/
         $('.dropdown').click(function () {
@@ -148,6 +151,7 @@ function init() {
         
         MicroModal.show('setdetail');
       });
+      setInterval(function() { return menuUpdater(queueinfo); }, 5000);
     },
     error: function() {
       alertify.error('메뉴 목록을 불러오지 못했습니다.');
@@ -161,6 +165,7 @@ function eventhandler() {
     $('.tab-content').removeClass('current');
     $(this).addClass('current');
     $("#" + tab_id).addClass('current');
+    $('div.soldout').css('width', $('div.mainmenu').innerWidth() || $('div.submenu').innerWidth()).css('height', $('div.mainmenu').innerHeight() || $('div.submenu').innerHeight());
   });
   $('#addorder').click(function() {
     cart.push({
@@ -173,6 +178,14 @@ function eventhandler() {
     MicroModal.close('menudetail');
   });
   $('#addset').click(function() {
+    let dropdown = $('div.dropdown input');
+    for(let obj of dropdown) {
+      let dropdown_item = queueinfo.find(o => o.name == $(obj).val());
+      if(!dropdown_item.isReady) {
+        alertify.error(dropdown_item.name + ' 메뉴는 준비중입니다!<br>다음에 다시 이용해 주세요');
+        return;
+      }
+    }
     let drinks = $('input[name^=drink]').map(function(idx, elem) { return $(elem).val(); }).get();
     if($('#setdetail-title').text() != '호승이 세트' && (!$('input[name=8000]').val() || !$('input[name=7000]').val())) {
       alertify.error('메뉴를 선택해 주세요!');
@@ -274,6 +287,18 @@ function sockethandler() {
       queueWriter();
     }
   });
+  socket.on('queueinfo', function(data) { queueinfo = data; menuUpdater(data);  });
+}
+
+function menuUpdater(data) {
+  for(let obj of data) {
+    let target = $('div#' + obj.name);
+    if(!obj.isReady) target.children('div.soldout').css('display', 'block');
+    else target.children('div.soldout').css('display', 'none');
+    let eta = obj.cooktime * 60000 + obj.start + (Math.floor(obj.queue / obj.slot) * obj.cooktime + obj.offset) * 60000 - Date.now();
+    eta = (eta > obj.cooktime * 60000) ? Math.round(eta / 60000) : obj.cooktime;
+    target.children('span.timespent').text(eta);
+  }
 }
 
 function queueWriter() {
