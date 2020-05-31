@@ -19,7 +19,8 @@
       <div><div class='examplebox' style='border-color: green'></div><span style='line-height: 30px; font-size: 20px; color: green'> 음식대기</span></div>&nbsp;&nbsp;&nbsp;          
       <div><div class='examplebox' style='border-color: red'></div><span style='line-height: 30px; font-size: 20px; color: red'> 결제대기</span></div>
     </div>
-    <a id='showqueue' class='btn green' style='position: absolute; top: 15px; right: 15px; padding: 13px 15px!important;' onclick='MicroModal.show("queue");'>대기열 보기</a>
+    <a class='btn green' style='position: absolute; top: 10px; right: 110px; padding: 13px 15px!important;' onclick='MicroModal.show("queue");'>선착순<br>대기열</a>
+    <a class='btn blue' style='position: absolute; top: 10px; right: 15px; padding: 13px 15px!important;' onclick='MicroModal.show("menuqueue");'>메뉴별<br>대기열</a>
     <div id='tablearea'></div><br><br><br>
     <div id='modals'>
       <div class="modal micromodal-slide" id="awaitpayment" aria-hidden="true">
@@ -96,6 +97,20 @@
               <h2 class="modal__title" id="queue-title">주문 대기열</h2>
             </header>
             <main class="modal__content" id="queue-content" style='margin: 0.8rem 0;'>
+            </main>
+            <footer style='text-align: right'>
+              <a class='btn red modal__close' style='font-size: 0.9rem;' data-micromodal-close>닫기</a>
+            </footer> 
+          </div>
+        </div>
+      </div>
+      <div class="modal micromodal-slide" id="menuqueue" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="menuqueue-title" style='text-align: left; width: 90%; max-height: 90%!important;'>
+            <header class="modal__header">
+              <h2 class="modal__title" id="menuqueue-title">메뉴별 대기열</h2>
+            </header>
+            <main class="modal__content" id="menuqueue-content" style='margin: 0.8rem 0;'>
             </main>
             <footer style='text-align: right'>
               <a class='btn red modal__close' style='font-size: 0.9rem;' data-micromodal-close>닫기</a>

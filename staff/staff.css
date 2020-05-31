@@ -14,6 +14,21 @@ table#table {
   border-spacing: 40px;
 }
 
+code {
+  margin: 5px;
+  padding: 2px;
+  background-color: #dddddd;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+ul.list {
+  margin-top: 0px;
+  margin-left: -20px; 
+  line-height: 2rem; 
+  font-size: 1.1rem;
+}
+
 .examplebox {
   display: block;
   width: 20px;

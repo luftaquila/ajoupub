@@ -13,6 +13,21 @@ body {
   background: #F5F7FA;
 }
 
+code {
+  margin: 5px;
+  padding: 2px;
+  background-color: #dddddd;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+ul.list {
+  margin-top: 0px;
+  margin-left: -20px; 
+  line-height: 2rem; 
+  font-size: 1.1rem;
+}
+
 .card {
   --background:#FFFFFF;
   --text:black;

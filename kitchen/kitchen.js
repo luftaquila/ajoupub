@@ -11,13 +11,16 @@ function init() {
     type: 'GET',
     cache: false,
     success: function(res) {
-      menu = res;
+      delete res.set;
+      menu = res.main.concat(res.sub);
+
       let html = '';
       html += `
           <div id="danger" style="display: table; width: 100%; margin-top: 20px">
-            <div style="display: table-cell; text-align: center; vertical-align: middle; width: 25%"><a class='btn green' style='padding: 13px 15px!important;' onclick='MicroModal.show("queue");'>대기열</a></div>
-            <div style="display: table-cell; text-align: center; vertical-align: middle; width: 50%"><a class='btn red' style='padding: 13px 15px!important; font-weight: bold' onclick='MicroModal.show("reset_confirm");'>⚠전체 초기화⚠</a></div>
-            <div style="display: table-cell; text-align: center; vertical-align: middle; width: 25%"><a class='btn purple' style='padding: 13px 15px!important;' href='/ajoupub/statistics'>통계</a></div>
+            <div style="display: table-cell; text-align: center; vertical-align: middle;"><a class='btn green' style='padding: 13px 15px!important;' onclick='MicroModal.show("queue");'>주문</a></div>
+            <div style="display: table-cell; text-align: center; vertical-align: middle;"><a class='btn blue' style='padding: 13px 15px!important;' onclick='MicroModal.show("menuqueue");'>메뉴</a></div>
+            <div style="display: table-cell; text-align: center; vertical-align: middle;"><a class='btn red' style='padding: 13px 15px!important; font-weight: bold' onclick='MicroModal.show("reset_confirm");'>⚠ 초기화 ⚠</a></div>
+            <div style="display: table-cell; text-align: center; vertical-align: middle;"><a class='btn purple' style='padding: 13px 15px!important;' href='/ajoupub/statistics'>통계</a></div>
           </div>`;
       html += '<div style="display: flex; width: 100%; margin: 20px 0px 10px; line-height: 1.5rem;"><div style="width: 15%; margin-left: 4%;"><hr></div><div style="width: 30%; text-align: center;"><span style="font-size: 1.5rem">메인 메뉴</span></div><div style="width: 44%"><hr></div></div>';
       html += htmlBuilder(res.main);
@@ -61,13 +64,28 @@ function sockethandler() {
   socket = io.connect('https://luftaquila.io', { path: "/ajoupub/socket", query: "identity=kitchen" });
   socket.on('queueinfo', function(data) { queueinfo = data; menuUpdater(data); });
   socket.on('queuechanged', function(queue) {
-    let html = '';
+    let html = '', htmlstr = '';
+    for(let i in menu) menu[i].array = [];
     for(let obj of queue) {
-      html += '<span>' + obj.table + '번 테이블 (' + obj.id + ' | ' + JSON.parse(obj.menu).staff + ')</span><ul style="margin-top: 5px">';
-      for(let order of JSON.parse(obj.menu).order) html += '<li>' + order.name + ' ' + order.quantity + 'ê°œ</li>';
-      html += '</ul>'
+      let objmenu = JSON.parse(obj.menu);
+      html += '<span>' + obj.table + '번 테이블 (' + obj.id + ' | ' + objmenu.staff + ')</span><ul style="margin-top: 5px">';
+      for(let order of objmenu.order) {
+        html += '<li>' + order.name + ' ' + order.quantity + '개</li>';
+        let target = menu.find(o => o.name == order.name);
+        if(target) {
+          if(!target.array) target.array = [ { table: obj.table, quantity: order.quantity } ];
+          else target.array.push({ table: obj.table, quantity: order.quantity });
+        }
+      }
+      html += '</ul>';
+    }
+    for(let obj of menu) {
+      htmlstr += '<li>' + obj.name + '<ul class="list">';
+      for(let item of obj.array) htmlstr += '<code>' + item.table + '번: ' + item.quantity + '개</code>';
+      htmlstr += '</ul></li>'
     }
     $('#queue-content').html(html);
+    $('#menuqueue-content').html(htmlstr);
   });
 }
 

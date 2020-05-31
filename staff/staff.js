@@ -2,7 +2,7 @@ let staff;
 $(function() {
   //(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
   init();
-  eventhandler()
+  eventhandler();
   sockethandler();
 });
 function init() {
@@ -15,6 +15,13 @@ function init() {
       drawTable(config.tablecount, config.tablerow);
     },
     error: function() { alertify.error('설정 파일을 불러오지 못했습니다.') }
+  });
+  $.ajax({
+    url: "/ajoupub/menu.json",
+    type: "GET",
+    cache: false,
+    success: function(res) { menu = res.main.concat(res.sub); },
+    error: function() { alertify.error('메뉴 파일을 불러오지 못했습니다.') }
   });
 }
 
@@ -112,13 +119,28 @@ function sockethandler() {
     $('#awaitfood-content').html(html);
   });
   socket.on('queuechanged', function(queue) {
-    let html = '';
+    let html = '', htmlstr = '';
+    for(let i in menu) menu[i].array = [];
     for(let obj of queue) {
-      html += '<span>' + obj.table + '번 테이블 (' + obj.id + ' | ' + JSON.parse(obj.menu).staff + ')</span><ul style="margin-top: 5px">';
-      for(let order of JSON.parse(obj.menu).order) html += '<li>' + order.name + ' ' + order.quantity + '개</li>';
-      html += '</ul>'
+      let objmenu = JSON.parse(obj.menu);
+      html += '<span>' + obj.table + '번 테이블 (' + obj.id + ' | ' + objmenu.staff + ')</span><ul style="margin-top: 5px">';
+      for(let order of objmenu.order) {
+        html += '<li>' + order.name + ' ' + order.quantity + '개</li>';
+        let target = menu.find(o => o.name == order.name);
+        if(target) {
+          if(!target.array) target.array = [ { table: obj.table, quantity: order.quantity } ];
+          else target.array.push({ table: obj.table, quantity: order.quantity });
+        }
+      }
+      html += '</ul>';
+    }
+    for(let obj of menu) {
+      htmlstr += '<li>' + obj.name + '<ul class="list">';
+      for(let item of obj.array) htmlstr += '<code>' + item.table + '번: ' + item.quantity + '개</code>';
+      htmlstr += '</ul></li>'
     }
     $('#queue-content').html(html);
+    $('#menuqueue-content').html(htmlstr);
   });
   socket.on('tablereset', init);
 }
