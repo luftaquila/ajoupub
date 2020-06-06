@@ -31,6 +31,11 @@ app.post('/requestTableStatus', async function(req, res) {
   res.send(result);
 });
 
+app.post('/requestLog', async function(req, res) {
+  let result = await db.query('SELECT * FROM `log`;');
+  res.send(result);
+});
+
 io.sockets.on('connection', async function (socket) {
   if(socket.handshake.query.identity == 'client') {
     socket.join('client');

@@ -1,1 +1,118 @@
-hi
+<html>
+  <head>
+    <title>야옹이선술집2020 통계</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <link rel='stylesheet' href='tachyons.min.css' />
+    <link rel='stylesheet' href='style.css' />
+    <link rel='stylesheet' href='statistics.css' />
+    <script src="https://kit.fontawesome.com/291664cdf8.js" crossorigin="anonymous"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css" />
+  </head>
+  <body class="">
+    <div class="h-100 midnight-blue pa3 ph0-l pv6-l">
+      <div class="center mw7">
+        <nav class="db dt-l w-100 border-box pa3 ">
+          <div class="switch-wrapper">
+            <img class="theme-icon" src="assets/moon.svg">
+            <div class="theme-switch">
+              <div class="switch"></div>
+            </div>
+          </div>
+        </nav>
+        <article class="cf">
+          <header class="header mw5 mw7-ns tl pa3">
+            <div class="fl w-50-ns pa2">
+              <h1 class="mt0">야옹이선술집 2020 <i class="fas fa-cocktail"></i></h1>
+              <p class="lh-copy measure black-60" style='font-size: 1rem'>
+                우리가 얼마나 벌었게요?
+              </p>
+            </div>
+          </header>
+          <div class="fl w-50 tc stat-card">
+            <div class="card-box tilebox-one">    
+              <span class="icon">
+                <i class="fas fa-file-invoice-dollar" style="font-size: 2rem"></i>
+              </span>      
+              <h6 class="black-40 ttu tl">총 매출액</h6>
+              <h3 id="total_sales" class="black tl" data-plugin="counterup"></h3>
+              <div class="sub-info pt3 pb4">
+                <span class="badge badge-danger mr-1">2% increase</span>
+                <span class="text-muted black-40">from yesterday (6m)</span>
+              </div>
+            </div>
+          </div>
+          <div class="fl w-50 tc stat-card">
+            <div class="card-box tilebox-one">         
+              <span class="icon">
+                <i class="fas fa-receipt" style="font-size: 2rem"></i>
+              </span>        
+              <h6 class="black-40 ttu tl">총 주문 건수</h6>
+              <h3 id="total_times_of_sale" class="black tl" data-plugin="counterup"></h3>
+              <div class="sub-info pt3 pb4">
+                <span class="badge badge-danger mr-1">2% increase</span>
+                <span class="text-muted black-40">from yesterday (6m)</span>
+              </div>
+            </div>
+          </div>
+          <div class="fl w-50 tc stat-card">
+            <div class="card-box tilebox-one">    
+              <span class="icon">
+                <i class="fas fa-utensils" style="font-size: 2rem"></i>
+              </span>      
+              <h6 class="black-40 ttu tl">총 나간 음식 수</h6>
+              <h3 id="total_serve" class="black tl" data-plugin="counterup"></h3>
+              <div class="sub-info pt3 pb4">
+                <span class="badge badge-danger mr-1">2% increase</span>
+                <span class="text-muted black-40">from yesterday (6m)</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="cf">
+          <section class="country-table">
+            <div class="card-box chart-wrapper" style="min-height: 0">
+              <div class="">
+                <h1 class="append-flag" style='font-family: Nanum Gothic'>메뉴별 통계</h1>
+                <div class="mb4 mt4">
+                  <h2 class="lh-copy measure black-60 mb4">주문 건수 </h2>
+                  <p class="lh-copy measure black-60">times of sale</p>
+                </div>
+              </div>
+              <div id="salesByMenuContainer" class="chart-container">
+                <canvas id="salesByMenu"></canvas>
+              </div>
+            </div>
+          </section>
+          <section class="country-table">
+            <div class="card-box chart-wrapper">
+              <div class="w-75">
+                <h1 class="append-flag" style='font-family: Nanum Gothic'>일별 통계</h1>
+                <div class="mb4 mt2">
+                  <h2 class="lh-copy measure black-60 mb4">매출액 </h2>
+                  <p class="lh-copy measure black-60">total sales</p>
+                </div>
+              </div>
+              <div id="salesByDateContainer" class="chart-container">
+                <canvas id="salesByDate"></canvas>
+              </div>
+              <div class="mb4 mt4">
+                <h2 class="lh-copy measure black-60 mb4 mt4">주문 건수 </h2>
+                <p class="lh-copy measure black-60">times of sale</p>
+              </div>
+             <div id="timesOfSaleByDateContainer" class="chart-container">
+               <canvas id="timesOfSaleByDate"></canvas>
+             </div>
+            </div>
+          </section>
+        </article>
+      </div>
+    </div>
+    <script src='/ajoupub/res/jquery-3.3.1.min.js'></script>
+    <script src='statistics.js'></script>
+  </body>
+</html>

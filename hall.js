@@ -181,7 +181,7 @@ function eventhandler() {
     let dropdown = $('div.dropdown input');
     for(let obj of dropdown) {
       let dropdown_item = queueinfo.find(o => o.name == $(obj).val());
-      if(!dropdown_item.isReady) {
+      if(dropdown_item && !dropdown_item.isReady) {
         alertify.error(dropdown_item.name + ' 메뉴는 준비중입니다!<br>다음에 다시 이용해 주세요');
         return;
       }
